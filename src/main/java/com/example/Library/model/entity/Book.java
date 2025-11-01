@@ -1,4 +1,5 @@
 package com.example.Library.model.entity;
 
-public class Book extends Asset {
+
+public final class Book extends Asset {
 }

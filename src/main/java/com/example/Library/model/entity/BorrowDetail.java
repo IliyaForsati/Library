@@ -1,4 +1,4 @@
 package com.example.Library.model.entity;
 
-public final class Magazine extends Asset {
+public class BorrowDetail {
 }
