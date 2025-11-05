@@ -1,4 +1,7 @@
 package com.example.Library.repository;
 
-public interface ReferenceRepository {
+import com.example.Library.model.entity.Reference;
+import org.springframework.data.jpa.repository.JpaRepository;
+
+public interface ReferenceRepository extends JpaRepository<Reference, Long> {
 }
