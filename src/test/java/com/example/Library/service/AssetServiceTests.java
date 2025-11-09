@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
+import static org.junit.jupiter.api.Assertions.*;
 
 @SpringBootTest
 public class AssetServiceTests {
@@ -51,5 +52,25 @@ public class AssetServiceTests {
         assertThat(saved.getTitle()).isEqualTo(gotten.getTitle());
         assertThat(saved.getAuthor()).isEqualTo(gotten.getAuthor());
         assertThat(saved.getPageCount()).isEqualTo(gotten.getPageCount());
+    }
+
+    @Test
+    void updateTest() {
+        BookDTO saved = bookService.add(sampleBook);
+
+        saved.setPageCount(500);
+        saved = bookService.update(saved.getId(), saved);
+
+        assertEquals(500, saved.getPageCount());
+    }
+
+    @Test
+    void deleteTest() {
+        BookDTO saved = bookService.add(sampleBook);
+
+        Long id = saved.getId();
+        bookService.delete(id);
+
+        assertThrows(IllegalArgumentException.class, () -> bookService.getById(id));
     }
 }

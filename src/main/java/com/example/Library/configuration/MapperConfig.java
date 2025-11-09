@@ -3,11 +3,12 @@ package com.example.Library.configuration;
 import com.example.Library.model.dto.BorrowDetailDTO;
 import com.example.Library.model.entity.BorrowDetail;
 import org.hibernate.collection.spi.PersistentBag;
-import org.modelmapper.Converter;
+import org.modelmapper.AbstractConverter;
 import org.modelmapper.ModelMapper;
 import org.modelmapper.convention.MatchingStrategies;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import java.util.List;
 
 
 @Configuration
@@ -33,6 +34,14 @@ public class MapperConfig {
         mapper.typeMap(BorrowDetailDTO.class, BorrowDetail.class).addMappings(m -> {
             m.skip(BorrowDetail::setUser);
             m.skip(BorrowDetail::setAsset);
+        });
+
+        // TODO: write a better converter
+        mapper.addConverter(new AbstractConverter<PersistentBag, List>() {
+            @Override
+            protected List convert(PersistentBag source) {
+                return source;
+            }
         });
 
         return mapper;
