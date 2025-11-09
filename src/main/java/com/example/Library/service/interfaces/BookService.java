@@ -1,4 +1,6 @@
 package com.example.Library.service.interfaces;
 
-public interface BookService {
+import com.example.Library.model.dto.BookDTO;
+
+public interface BookService extends AssetService<BookDTO> {
 }

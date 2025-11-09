@@ -26,7 +26,7 @@ public class BorrowDetail {
     @EqualsAndHashCode.Exclude
     private User user;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "asset_id")
     @ToString.Exclude
     @EqualsAndHashCode.Exclude

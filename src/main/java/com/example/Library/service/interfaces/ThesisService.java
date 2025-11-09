@@ -1,4 +1,6 @@
 package com.example.Library.service.interfaces;
 
-public interface ThesisService {
+import com.example.Library.model.dto.ThesisDTO;
+
+public interface ThesisService extends AssetService<ThesisDTO> {
 }

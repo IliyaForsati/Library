@@ -8,9 +8,12 @@ import java.time.LocalDate;
 @Data
 @Builder
 public class BorrowDetailDTO {
-    private UserDTO user;
-    private AssetDTO asset;
-
     private LocalDate borrowDate;
     private LocalDate returnDate;
+
+    private Long userID;
+    private String username;
+
+    private Long assetID;
+    private String assetTitle;
 }

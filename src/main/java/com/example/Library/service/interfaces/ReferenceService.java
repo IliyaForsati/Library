@@ -1,4 +1,6 @@
 package com.example.Library.service.interfaces;
 
-public interface ReferenceService {
+import com.example.Library.model.dto.ReferenceDTO;
+
+public interface ReferenceService extends AssetService<ReferenceDTO> {
 }
