@@ -3,6 +3,6 @@ package com.example.Library.model.entity;
 import jakarta.persistence.*;
 
 @Entity
-@Table(name = "references")
+@Table(name = "references_table")
 public final class Reference extends Asset {
 }
