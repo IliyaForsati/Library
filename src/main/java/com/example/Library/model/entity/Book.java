@@ -11,6 +11,6 @@ import lombok.*;
 @EqualsAndHashCode(callSuper = true)
 @Entity
 @Table(name = "books")
-public final class Book extends Asset {
+public class Book extends Asset {
     private int pageCount;
 }

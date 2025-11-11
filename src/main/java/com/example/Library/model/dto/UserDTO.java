@@ -1,5 +1,6 @@
 package com.example.Library.model.dto;
 
+import com.example.Library.model.enums.UserRole;
 import lombok.*;
 
 import java.util.List;
@@ -9,7 +10,9 @@ import java.util.List;
 @AllArgsConstructor
 @Builder
 public class UserDTO {
+    private Long id;
     private String username;
     private String hashedPassword;
+    private UserRole role = UserRole.USER;
     private List<BorrowDetailDTO> borrowDetailList;
 }

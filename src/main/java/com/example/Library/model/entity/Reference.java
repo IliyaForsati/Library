@@ -4,5 +4,5 @@ import jakarta.persistence.*;
 
 @Entity
 @Table(name = "references_table")
-public final class Reference extends Asset {
+public class Reference extends Asset {
 }

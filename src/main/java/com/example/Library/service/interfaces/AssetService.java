@@ -1,12 +1,6 @@
 package com.example.Library.service.interfaces;
 
-import java.util.List;
+import com.example.Library.service.interfaces.publicInterfaces.CRUD;
 
-public interface AssetService<DTO> {
-    DTO add(DTO dto);
-    DTO getById(Long id);
-    List<DTO> getAll();
-    DTO update(Long targetId, DTO src);
-    void delete(Long id);
-    void deleteAll();
+public interface AssetService<DTO> extends CRUD<DTO> {
 }

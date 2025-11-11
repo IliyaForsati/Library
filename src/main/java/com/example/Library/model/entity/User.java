@@ -1,5 +1,6 @@
 package com.example.Library.model.entity;
 
+import com.example.Library.model.enums.UserRole;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -21,8 +22,9 @@ public class User {
 
     private String username;
     private String hashedPassword;
+    private UserRole role = UserRole.USER;
 
-    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.EAGER)
     @ToString.Exclude
     private List<BorrowDetail> borrowDetailList;
 }

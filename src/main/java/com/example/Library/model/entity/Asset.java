@@ -25,7 +25,7 @@ public abstract class Asset {
     private String author;
     private int releaseDate;
 
-    @OneToMany(mappedBy = "asset", cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToMany(mappedBy = "asset", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.EAGER)
     @ToString.Exclude
     private List<BorrowDetail> borrowDetailList;
 }

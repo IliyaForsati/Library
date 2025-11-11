@@ -1,6 +1,8 @@
 package com.example.Library.service.implementation;
 
+import com.example.Library.model.dto.AssetDTO;
 import com.example.Library.model.entity.Asset;
+import com.example.Library.model.entity.BorrowDetail;
 import com.example.Library.service.interfaces.AssetService;
 import org.modelmapper.ModelMapper;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -9,7 +11,7 @@ import java.lang.reflect.ParameterizedType;
 import java.util.List;
 import java.util.stream.Collectors;
 
-public sealed class AssetServiceIMP<Entity extends Asset, DTO> implements AssetService<DTO>
+public sealed class AssetServiceIMP<Entity extends Asset, DTO extends AssetDTO> implements AssetService<DTO>
         permits BookServiceIMP, MagazineServiceIMP, ReferenceServiceIMP, ThesisServiceIMP {
 
     protected final JpaRepository<Entity, Long> repository;
@@ -38,7 +40,7 @@ public sealed class AssetServiceIMP<Entity extends Asset, DTO> implements AssetS
     }
 
     @Override
-    public DTO getById(@NonNull Long id) {
+    public DTO getById(@NonNull Long id) throws IllegalArgumentException {
         return repository.findById(id)
                 .map(entity -> mapper.map(entity, dtoClass))
                 .orElseThrow(() -> new IllegalArgumentException("Entity with id " + id + " not found"));
@@ -52,10 +54,20 @@ public sealed class AssetServiceIMP<Entity extends Asset, DTO> implements AssetS
     }
 
     @Override
-    public DTO update(@NonNull Long targetId, @NonNull DTO src) {
+    public DTO update(@NonNull Long targetId, @NonNull DTO src) throws IllegalArgumentException {
         return repository.findById(targetId)
                 .map(existingEntity -> {
                     mapper.map(src, existingEntity);
+
+                    existingEntity.getBorrowDetailList().clear();
+                    if (src.getBorrowDetailList() != null) {
+                        existingEntity.getBorrowDetailList().addAll(
+                                src.getBorrowDetailList().stream()
+                                        .map(dto -> mapper.map(dto, BorrowDetail.class))
+                                        .toList()
+                        );
+                    }
+                    
                     Entity updated = repository.save(existingEntity);
                     return mapper.map(updated, dtoClass);
                 })
@@ -63,7 +75,7 @@ public sealed class AssetServiceIMP<Entity extends Asset, DTO> implements AssetS
     }
 
     @Override
-    public void delete(@NonNull Long id) {
+    public void delete(@NonNull Long id) throws IllegalArgumentException {
         if (!repository.existsById(id)) {
             throw new IllegalArgumentException("Entity with id " + id + " not found");
         }
