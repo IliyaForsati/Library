@@ -1,15 +1,11 @@
 package com.example.Library.configuration;
 
-import com.example.Library.model.dto.BorrowDetailDTO;
-import com.example.Library.model.entity.BorrowDetail;
-import org.hibernate.collection.spi.PersistentBag;
-import org.modelmapper.AbstractConverter;
+import com.example.Library.model.dto.*;
+import com.example.Library.model.entity.*;
 import org.modelmapper.ModelMapper;
 import org.modelmapper.convention.MatchingStrategies;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import java.util.List;
-
 
 @Configuration
 public class MapperConfig {
@@ -25,9 +21,7 @@ public class MapperConfig {
 
         // BorrowDetail
         mapper.typeMap(BorrowDetail.class, BorrowDetailDTO.class).addMappings(m -> {
-            m.map(src -> src.getUser().getId(), BorrowDetailDTO::setUserID);
             m.map(src -> src.getUser().getUsername(), BorrowDetailDTO::setUsername);
-            m.map(src -> src.getAsset().getId(), BorrowDetailDTO::setAssetID);
             m.map(src -> src.getAsset().getTitle(), BorrowDetailDTO::setAssetTitle);
         });
 
@@ -36,13 +30,26 @@ public class MapperConfig {
             m.skip(BorrowDetail::setAsset);
         });
 
-        // TODO: write a better converter
-        mapper.addConverter(new AbstractConverter<PersistentBag, List>() {
-            @Override
-            protected List convert(PersistentBag source) {
-                return source;
-            }
+        // Book
+        mapper.typeMap(BookDTO.class, Book.class).addMappings(m -> {
+            m.skip(Book::setBorrowDetailList);
         });
+
+        // Magazine
+        mapper.typeMap(MagazineDTO.class, Magazine.class).addMappings(m -> {
+            m.skip(Magazine::setBorrowDetailList);
+        });
+
+        // Reference
+        mapper.typeMap(ReferenceDTO.class, Reference.class).addMappings(m -> {
+            m.skip(Reference::setBorrowDetailList);
+        });
+
+        // Thesis
+        mapper.typeMap(ThesisDTO.class, Thesis.class).addMappings(m -> {
+            m.skip(Thesis::setBorrowDetailList);
+        });
+
 
         return mapper;
     }

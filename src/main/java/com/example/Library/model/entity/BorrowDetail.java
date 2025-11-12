@@ -20,7 +20,7 @@ public class BorrowDetail {
     private LocalDate borrowDate;
     private LocalDate returnDate;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "user_id")
     @ToString.Exclude
     @EqualsAndHashCode.Exclude

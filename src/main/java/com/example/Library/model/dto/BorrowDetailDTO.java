@@ -1,19 +1,13 @@
 package com.example.Library.model.dto;
 
-import lombok.Builder;
-import lombok.Data;
-
+import lombok.*;
 import java.time.LocalDate;
 
 @Data
-@Builder
+@NoArgsConstructor
 public class BorrowDetailDTO {
+    private String username;
+    private String assetTitle;
     private LocalDate borrowDate;
     private LocalDate returnDate;
-
-    private Long userID;
-    private String username;
-
-    private Long assetID;
-    private String assetTitle;
 }

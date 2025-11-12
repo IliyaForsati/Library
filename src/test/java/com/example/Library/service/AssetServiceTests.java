@@ -6,7 +6,6 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -20,12 +19,11 @@ public class AssetServiceTests {
 
     @BeforeEach
     void setUp() {
-        sampleBook = BookDTO.builder()
-                .title("Clean Code")
-                .author("Robert C. Martin")
-                .releaseDate(2009)
-                .pageCount(464)
-                .build();
+        sampleBook = new BookDTO();
+        sampleBook.setTitle("Clean Code");
+        sampleBook.setAuthor("Robert C. Martin");
+        sampleBook.setReleaseDate(2009);
+        sampleBook.setPageCount(464);
 
         bookService.deleteAll();
     }

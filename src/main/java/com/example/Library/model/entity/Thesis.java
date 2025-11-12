@@ -4,5 +4,5 @@ import jakarta.persistence.*;
 
 @Entity
 @Table(name = "theses")
-public final class Thesis extends Asset {
+public class Thesis extends Asset {
 }
