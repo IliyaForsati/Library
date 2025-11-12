@@ -12,7 +12,7 @@ import java.util.List;
 public class UserDTO {
     private Long id;
     private String username;
-    private String hashedPassword;
+    private String password;
     private UserRole role = UserRole.USER;
     private List<BorrowDetailDTO> borrowDetailList;
 }
