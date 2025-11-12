@@ -1,23 +1,29 @@
 package com.example.Library.controller;
 
+// <editor-fold desc="Imports">
 import com.example.Library.model.dto.MagazineDTO;
 import com.example.Library.service.interfaces.MagazineService;
+import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-
 import java.net.URI;
 import java.util.List;
+// </editor-fold>
 
 @RestController
 @RequestMapping("/api/magazines")
 public class MagazineController {
 
-    @Autowired
-    private MagazineService magazineService;
+    // <editor-fold desc="Injected Dependencies">
+    @Autowired private MagazineService magazineService;
+    @Autowired private ModelMapper mapper;
+    // </editor-fold>
 
+    // <editor-fold desc="End Points">
     @PostMapping
-    public ResponseEntity<MagazineDTO> add(@RequestBody MagazineDTO magazineDTO) {
+    public ResponseEntity<MagazineDTO> add(@RequestBody DTO.MagazineRecord magazineRecord) {
+        MagazineDTO magazineDTO = mapper.map(magazineRecord, MagazineDTO.class);
         MagazineDTO created = magazineService.add(magazineDTO);
         URI location = URI.create("/api/magazines/" + created.getId());
         return ResponseEntity.created(location).body(created);
@@ -40,8 +46,9 @@ public class MagazineController {
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<MagazineDTO> update(@PathVariable Long id, @RequestBody MagazineDTO magazineDTO) {
+    public ResponseEntity<MagazineDTO> update(@PathVariable Long id, @RequestBody DTO.MagazineRecord magazineRecord) {
         try {
+            MagazineDTO magazineDTO = mapper.map(magazineRecord, MagazineDTO.class);
             MagazineDTO updated = magazineService.update(id, magazineDTO);
             return ResponseEntity.ok(updated);
         } catch (IllegalArgumentException e) {
@@ -64,4 +71,5 @@ public class MagazineController {
         magazineService.deleteAll();
         return ResponseEntity.noContent().build();
     }
+    // </editor-fold>
 }

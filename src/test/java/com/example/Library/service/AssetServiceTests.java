@@ -19,12 +19,11 @@ public class AssetServiceTests {
 
     @BeforeEach
     void setUp() {
-        sampleBook = BookDTO.builder()
-                .title("Clean Code")
-                .author("Robert C. Martin")
-                .releaseDate(2009)
-                .pageCount(464)
-                .build();
+        sampleBook = new BookDTO();
+        sampleBook.setTitle("Clean Code");
+        sampleBook.setAuthor("Robert C. Martin");
+        sampleBook.setReleaseDate(2009);
+        sampleBook.setPageCount(464);
 
         bookService.deleteAll();
     }

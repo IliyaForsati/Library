@@ -21,9 +21,7 @@ public class MapperConfig {
 
         // BorrowDetail
         mapper.typeMap(BorrowDetail.class, BorrowDetailDTO.class).addMappings(m -> {
-            m.map(src -> src.getUser().getId(), BorrowDetailDTO::setUserID);
             m.map(src -> src.getUser().getUsername(), BorrowDetailDTO::setUsername);
-            m.map(src -> src.getAsset().getId(), BorrowDetailDTO::setAssetID);
             m.map(src -> src.getAsset().getTitle(), BorrowDetailDTO::setAssetTitle);
         });
 

@@ -20,17 +20,13 @@ import java.util.stream.Collectors;
 @Service
 public class UserServiceIMP implements UserService, UserDetailsService {
 
-    private final UserRepository repository;
-    private final PasswordEncoder encoder;
-    private final ModelMapper mapper;
+    // <editor-fold desc="Injected Dependencies">
+    @Autowired private UserRepository repository;
+    @Autowired private PasswordEncoder encoder;
+    @Autowired private ModelMapper mapper;
+    // </editor-fold>
 
-    @Autowired
-    public UserServiceIMP(UserRepository repository, PasswordEncoder encoder, ModelMapper mapper) {
-        this.repository = repository;
-        this.encoder = encoder;
-        this.mapper = mapper;
-    }
-
+    // <editor-fold desc="Method Implementations">
     @Override
     public UserDTO add(UserDTO dto) {
         User entity = mapper.map(dto, User.class);
@@ -44,13 +40,6 @@ public class UserServiceIMP implements UserService, UserDetailsService {
         return repository.findById(id)
                 .map(user -> mapper.map(user, UserDTO.class))
                 .orElseThrow(() -> new IllegalArgumentException("User with id " + id + " not found"));
-    }
-
-    @Override
-    public UserDTO getByUsername(String username) {
-        return repository.findByUsername(username)
-                .map(user -> mapper.map(user, UserDTO.class))
-                .orElseThrow(() -> new IllegalArgumentException("User with username " + username + " not found"));
     }
 
     @Override
@@ -107,11 +96,6 @@ public class UserServiceIMP implements UserService, UserDetailsService {
     }
 
     @Override
-    public void removeRole(Long id) {
-        assignRole(id, UserRole.USER);
-    }
-
-    @Override
     public boolean changePassword(Long id, String oldPassword, String newPassword) {
         User user = repository.findById(id)
                 .orElseThrow(() -> new IllegalArgumentException("User with id " + id + " not found"));
@@ -130,4 +114,5 @@ public class UserServiceIMP implements UserService, UserDetailsService {
         return repository.findByUsername(username)
                 .orElseThrow(() -> new UsernameNotFoundException("User with username " + username + " not found"));
     }
+    // </editor-fold>
 }

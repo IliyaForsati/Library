@@ -1,41 +1,54 @@
 package com.example.Library.controller;
 
+// <editor-fold desc="Imports">
 import com.example.Library.model.dto.BorrowDetailDTO;
 import com.example.Library.service.interfaces.BorrowService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-
 import java.util.List;
+import java.util.Map;
+// </editor-fold>
 
 @RestController
-@RequestMapping("/api/borrow")
+@RequestMapping("/api/")
 public class BorrowController {
 
-    @Autowired
-    private BorrowService borrowService;
+    // <editor-fold desc="Injected Dependencies">
+    @Autowired private BorrowService borrowService;
+    // </editor-fold>
 
-    @PostMapping
-    public ResponseEntity<BorrowDetailDTO> borrowAsset(@RequestBody BorrowDetailDTO dto) {
-        BorrowDetailDTO result = borrowService.borrowAsset(dto);
-        return ResponseEntity.ok(result);
+    // <editor-fold desc="End Points">
+    @PostMapping("borrow/{assetId}")
+    public ResponseEntity<?> borrowAsset(@PathVariable Long assetId) {
+        try {
+            BorrowDetailDTO result = borrowService.borrowAsset(assetId);
+            return ResponseEntity.ok(result);
+        } catch (IllegalArgumentException e) {
+            return ResponseEntity.badRequest().body(Map.of("error", e.getMessage()));
+        }
     }
 
-    @PutMapping("/{assetId}/return")
-    public ResponseEntity<BorrowDetailDTO> returnAsset(@PathVariable Long assetId) {
-        BorrowDetailDTO result = borrowService.returnAsset(assetId);
-        return ResponseEntity.ok(result);
+    @PutMapping("return/{assetId}")
+    public ResponseEntity<?> returnAsset(@PathVariable Long assetId) {
+        try {
+            BorrowDetailDTO result = borrowService.returnAsset(assetId);
+            return ResponseEntity.ok(result);
+        } catch (IllegalArgumentException e) {
+            return ResponseEntity.badRequest().body(Map.of("error", e.getMessage()));
+        }
     }
 
-    @GetMapping("/me")
+    @GetMapping("borrow-detail/getAll")
     public ResponseEntity<List<BorrowDetailDTO>> getMyBorrowDetails() {
         List<BorrowDetailDTO> list = borrowService.getBorrowDetailsOfCurrentUser();
         return ResponseEntity.ok(list);
     }
 
-    @GetMapping("/asset/{assetId}")
+    @GetMapping("borrow-detail/getAll/{assetId}")
     public ResponseEntity<List<BorrowDetailDTO>> getBorrowDetailsOfAsset(@PathVariable Long assetId) {
         List<BorrowDetailDTO> list = borrowService.getBorrowDetailsOfAsset(assetId);
         return ResponseEntity.ok(list);
     }
+    // </editor-fold>
 }
