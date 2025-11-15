@@ -9,6 +9,7 @@ import com.example.Library.repository.AssetRepository;
 import com.example.Library.repository.BorrowDetailRepository;
 import com.example.Library.service.interfaces.BorrowService;
 import com.example.Library.service.interfaces.UserService;
+import org.springframework.transaction.annotation.Transactional;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -32,16 +33,17 @@ public class BorrowServiceIMP implements BorrowService {
     // </editor-fold>
 
     // <editor-fold desc="Methods Implementations">
+    @Transactional
     @Override
     public BorrowDetailDTO borrowAsset(Long assetId) throws IllegalArgumentException {
         BorrowDetail entity = new BorrowDetail();
 
         User user = mapper.map(userService.getCurrentUser(), User.class);
 
-        Asset asset = assetRepository.findById(assetId)
+        Asset asset = assetRepository.findByIdForUpdate(assetId)
                 .orElseThrow(() -> new IllegalArgumentException("Asset with id " + assetId + "not found"));
 
-        if (!asset.getBorrowDetailList().isEmpty() && asset.getBorrowDetailList().getLast().getReturnDate() != null)
+        if (!asset.getBorrowDetailList().isEmpty() && asset.getBorrowDetailList().getLast().getReturnDate() == null)
             throw new IllegalArgumentException("Asset with id " + assetId + "is borrowed");
 
         entity.setUser(user);
@@ -53,9 +55,10 @@ public class BorrowServiceIMP implements BorrowService {
         return mapper.map(borrowDetail, BorrowDetailDTO.class);
     }
 
+    @Transactional
     @Override
     public BorrowDetailDTO returnAsset(Long assetId) throws IllegalArgumentException {
-        Asset asset = assetRepository.findById(assetId)
+        Asset asset = assetRepository.findByIdForUpdate(assetId)
                 .orElseThrow(() -> new IllegalArgumentException("Asset with id " + assetId + "not found"));
 
         BorrowDetail borrowDetail = asset.getBorrowDetailList().getLast();
@@ -72,6 +75,7 @@ public class BorrowServiceIMP implements BorrowService {
         return mapper.map(borrowDetail, BorrowDetailDTO.class);
     }
 
+    @Transactional
     @Override
     public List<BorrowDetailDTO> getBorrowDetailsOfCurrentUser() {
         return repository.findByUserId(userService.getCurrentUser().getId()).stream()
@@ -79,6 +83,7 @@ public class BorrowServiceIMP implements BorrowService {
                 .collect(Collectors.toList());
     }
 
+    @Transactional
     @Override
     public List<BorrowDetailDTO> getBorrowDetailsOfAsset(Long assetId) {
         return repository.findByAssetIdAndUserId(assetId, userService.getCurrentUser().getId()).stream()
